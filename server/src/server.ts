@@ -95,12 +95,20 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
+// Start the server immediately so Render detects port binding
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Connect to MongoDB asynchronously
+if (!process.env.MONGO_URI) {
+  console.error('[Error] MONGO_URI is undefined in environment variables.');
+  process.exit(1);
+}
+
 mongoose.connect(process.env.MONGO_URI as string)
   .then(() => {
-    console.log('MongoDB Connected');
-    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    console.log('MongoDB Connected successfully');
   })
   .catch((err) => {
-    console.error('Database connection error:', err);
+    console.error('Database connection FATAL error:', err);
+    process.exit(1); // Exit with failure code to alert hosting provider
   });
