@@ -55,13 +55,13 @@
   }
   body {
     @apply text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
-    background: radial-gradient(circle at top left, hsl(220 40% 94%), hsl(210 33% 98%)), linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    background: url('/background.jpg') no-repeat center center fixed;
+    background-size: cover;
     min-height: 100vh;
-    background-attachment: fixed;
   }
   .dark body {
-    background: radial-gradient(circle at top left, hsl(240 5% 15%), hsl(240 5% 10%)), linear-gradient(135deg, #121212 0%, #000000 100%);
-    background-attachment: fixed;
+    background: url('/background.jpg') no-repeat center center fixed;
+    background-size: cover;
   }
 }
 
