@@ -61,6 +61,7 @@ app.use(helmet());
 
 const allowedOrigins = [
   'http://localhost:5173', 
+  'https://task-management-bay-nine.vercel.app',
   process.env.FRONTEND_URL || 'https://antigravity-tasks.production.app'
 ];
 

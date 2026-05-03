@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '@/store/authStore';
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+const isProd = import.meta.env.PROD;
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (isProd ? 'https://task-management-y37e.onrender.com' : 'http://localhost:5000');
 
 export const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
