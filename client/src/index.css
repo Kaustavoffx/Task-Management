@@ -55,12 +55,12 @@
   }
   body {
     @apply text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
-    background: url('/background.jpg') no-repeat center center fixed;
+    background: url('/background.png') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
   }
   .dark body {
-    background: url('/background.jpg') no-repeat center center fixed;
+    background: url('/background.png') no-repeat center center fixed;
     background-size: cover;
   }
 }
