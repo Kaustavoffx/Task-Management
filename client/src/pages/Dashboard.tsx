@@ -4,10 +4,10 @@ import { useUiStore } from "@/store/uiStore";
 import { type Task, useTasks } from "@/hooks/useTasks";
 import { useSocket } from "@/hooks/useSocket";
 import { Button } from "@/components/ui/button";
-import { Plus, LayoutGrid, List, Menu } from "lucide-react";
+import { Plus, LayoutGrid, List, Menu, Calendar as CalendarIcon, Settings as SettingsIcon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 import { TaskTable } from "@/components/TaskTable";
 import { TaskKanban } from "@/components/TaskKanban";
 import { TaskModal } from "@/components/TaskModal";
@@ -22,6 +22,10 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
   const socket = useSocket();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const currentView = location.pathname.split("/").pop();
+
+  const MotionButton = motion.create ? motion.create(Button) : motion(Button as any);
   
   // Extract filters from URL and Zustand
   const statusFilter = searchParams.get("status") || undefined;
@@ -80,7 +84,7 @@ export default function Dashboard() {
   }, [tasks]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden">
       {/* Desktop Sidebar */}
       <div className="hidden md:flex w-64 flex-col border-r border-border shrink-0">
         <Sidebar />
@@ -89,7 +93,7 @@ export default function Dashboard() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden relative">
         {/* Header */}
-        <header className="h-16 border-b border-border bg-card/50 backdrop-blur flex items-center justify-between px-4 md:px-8 shrink-0">
+        <header className="h-16 border-b border-white/10 dark:border-white/5 bg-white/5 dark:bg-black/10 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 shrink-0 transition-colors">
           <div className="flex items-center gap-4 md:hidden">
             <Sheet>
               <SheetTrigger asChild>
@@ -101,7 +105,7 @@ export default function Dashboard() {
                 <Sidebar />
               </SheetContent>
             </Sheet>
-            <span className="font-bold text-lg">Antigravity</span>
+            <span className="font-bold text-lg">Motion Todoist</span>
           </div>
 
           <div className="hidden md:flex flex-col">
@@ -110,41 +114,75 @@ export default function Dashboard() {
           </div>
           
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center bg-secondary rounded-lg p-1 mr-2">
-              <Button
+            <div className="hidden sm:flex items-center bg-secondary/30 backdrop-blur-md rounded-lg p-1 mr-2 border border-white/10">
+              <MotionButton
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 variant={viewMode === "table" ? "secondary" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("table")}
-                className={`h-8 px-2 min-h-[44px] sm:min-h-[32px] ${viewMode === "table" ? "bg-background shadow-sm" : ""}`}
+                className={`h-8 px-2 min-h-[44px] sm:min-h-[32px] ${viewMode === "table" ? "bg-background/80 shadow-sm" : ""}`}
                 aria-label="Switch to table view"
               >
                 <List size={16} className="mr-2" />
                 Table
-              </Button>
-              <Button
+              </MotionButton>
+              <MotionButton
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 variant={viewMode === "kanban" ? "secondary" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("kanban")}
-                className={`h-8 px-2 min-h-[44px] sm:min-h-[32px] ${viewMode === "kanban" ? "bg-background shadow-sm" : ""}`}
+                className={`h-8 px-2 min-h-[44px] sm:min-h-[32px] ${viewMode === "kanban" ? "bg-background/80 shadow-sm" : ""}`}
                 aria-label="Switch to kanban view"
               >
                 <LayoutGrid size={16} className="mr-2" />
                 Board
-              </Button>
+              </MotionButton>
             </div>
             
-            <Button onClick={handleAddTask} className="gap-2 shadow-sm min-h-[44px] sm:min-h-[36px]">
+            <MotionButton 
+              whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleAddTask} 
+              className="gap-2 shadow-sm min-h-[44px] sm:min-h-[36px] border border-white/10"
+            >
               <Plus size={16} />
               <span className="hidden sm:inline">Add Task</span>
-            </Button>
+            </MotionButton>
           </div>
         </header>
 
         {/* Scrollable Content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
-          <div className="max-w-7xl mx-auto">
-            
-            <FilterBar />
+          {currentView === "calendar" ? (
+            <div className="flex items-center justify-center h-full">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }} 
+                animate={{ opacity: 1, scale: 1 }} 
+                className="glass-card p-12 text-center rounded-3xl max-w-md w-full"
+              >
+                <CalendarIcon className="h-16 w-16 mx-auto mb-4 text-primary/50" />
+                <h2 className="text-2xl font-bold mb-2">Calendar View</h2>
+                <p className="text-muted-foreground">Your schedule will appear here. Coming soon in a future update.</p>
+              </motion.div>
+            </div>
+          ) : currentView === "settings" ? (
+            <div className="flex items-center justify-center h-full">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }} 
+                animate={{ opacity: 1, scale: 1 }} 
+                className="glass-card p-12 text-center rounded-3xl max-w-md w-full"
+              >
+                <SettingsIcon className="h-16 w-16 mx-auto mb-4 text-primary/50" />
+                <h2 className="text-2xl font-bold mb-2">Settings</h2>
+                <p className="text-muted-foreground">Manage your preferences here. Coming soon in a future update.</p>
+              </motion.div>
+            </div>
+          ) : (
+            <div className="max-w-7xl mx-auto">
+              
+              <FilterBar />
 
             <div className="mb-8">
               <div className="flex justify-between text-sm mb-2 text-muted-foreground">
@@ -175,10 +213,10 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <TaskKanban tasks={tasks || []} onEdit={handleEditTask} />
-              )}
-            </div>
+              </div>
 
-          </div>
+            </div>
+          )}
         </main>
       </div>
 
