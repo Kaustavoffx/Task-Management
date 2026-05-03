@@ -32,7 +32,7 @@ export function Sidebar() {
             to={item.href}
             whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
             whileTap={{ scale: 0.98 }}
-            className={({ isActive }) =>
+            className={({ isActive }: { isActive: boolean }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-primary/10 text-primary border border-primary/20 shadow-sm"

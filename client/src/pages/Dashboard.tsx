@@ -213,9 +213,9 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <TaskKanban tasks={tasks || []} onEdit={handleEditTask} />
-              </div>
-
+              )}
             </div>
+          </div>
           )}
         </main>
       </div>
