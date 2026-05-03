@@ -1,11 +1,11 @@
 import { format } from "date-fns";
 import { MoreHorizontal, Pencil, Trash2, Clock, GripVertical } from "lucide-react";
-import { Task, useDeleteTask, useUpdateTask } from "@/hooks/useTasks";
+import { type Task, useDeleteTask, useUpdateTask } from "@/hooks/useTasks";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
-import { DndContext, useDroppable, useDraggable, DragEndEvent } from "@dnd-kit/core";
+import { DndContext, useDroppable, useDraggable, type DragEndEvent } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -45,11 +45,10 @@ interface DraggableCardProps {
   index: number;
   onEdit: (task: Task) => void;
   deleteMutation: any;
-  updateMutation: any;
   handleStatusChange: (task: Task, newStatus: string) => void;
 }
 
-const DraggableCard = ({ task, onEdit, deleteMutation, updateMutation, handleStatusChange, index }: DraggableCardProps) => {
+const DraggableCard = ({ task, onEdit, deleteMutation, handleStatusChange, index }: DraggableCardProps) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: task._id,
     data: { task },
@@ -232,7 +231,6 @@ export function TaskKanban({ tasks, onEdit }: TaskKanbanProps) {
                   index={index}
                   onEdit={onEdit}
                   deleteMutation={deleteMutation}
-                  updateMutation={updateMutation}
                   handleStatusChange={handleStatusChange}
                 />
               ))}

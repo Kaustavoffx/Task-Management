@@ -5,7 +5,7 @@ import * as z from "zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCreateTask, useUpdateTask, Task } from "@/hooks/useTasks";
+import { useCreateTask, useUpdateTask, type Task } from "@/hooks/useTasks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -89,9 +89,14 @@ export function TaskModal({ isOpen, onClose, task }: TaskModalProps) {
   }, [task, isOpen, form]);
 
   const onSubmit = (values: TaskFormValues) => {
+    const payload = {
+      ...values,
+      dueDate: values.dueDate ? values.dueDate.toISOString() : undefined,
+    };
+
     if (task) {
       updateMutation.mutate(
-        { id: task._id, ...values },
+        { id: task._id, ...payload },
         {
           onSuccess: () => {
             onClose();
@@ -99,7 +104,7 @@ export function TaskModal({ isOpen, onClose, task }: TaskModalProps) {
         }
       );
     } else {
-      createMutation.mutate(values, {
+      createMutation.mutate(payload as any, {
         onSuccess: () => {
           onClose();
         },

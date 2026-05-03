@@ -1,12 +1,11 @@
 import { format } from "date-fns";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import { Task, useDeleteTask } from "@/hooks/useTasks";
+import { type Task, useDeleteTask } from "@/hooks/useTasks";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Table,
-  Body,
   TableCell,
   TableHead,
   TableHeader,
