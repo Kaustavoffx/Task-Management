@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useAuthStore } from "@/store/authStore";
 import { useUiStore } from "@/store/uiStore";
-import { Task, useTasks } from "@/hooks/useTasks";
+import { type Task, useTasks } from "@/hooks/useTasks";
 import { useSocket } from "@/hooks/useSocket";
 import { Button } from "@/components/ui/button";
 import { Plus, LayoutGrid, List, Menu } from "lucide-react";
@@ -39,15 +39,15 @@ export default function Dashboard() {
   useEffect(() => {
     if (!socket) return;
 
-    const handleTaskCreated = (newTask: Task) => {
+    const handleTaskCreated = () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     };
 
-    const handleTaskUpdated = (updatedTask: Task) => {
+    const handleTaskUpdated = () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     };
 
-    const handleTaskDeleted = (deletedTaskId: string) => {
+    const handleTaskDeleted = () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     };
 

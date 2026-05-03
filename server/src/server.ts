@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import mongoSanitize from 'express-mongo-sanitize';
+// import mongoSanitize from 'express-mongo-sanitize'; // Temporarily removed to fix Express 5.x crash
 import http from 'http';
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
@@ -78,7 +78,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(mongoSanitize());
+// app.use(mongoSanitize()); // Temporarily disabled to avoid "Cannot set property query" error on Express 5
 
 // Routes
 app.use('/api/auth', authRoutes);
